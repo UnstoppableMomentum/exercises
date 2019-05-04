@@ -36,3 +36,5 @@ proguard/
 *.orig
 *.creator.user
 *.pro.user
+.qmake.stash
+Makefile

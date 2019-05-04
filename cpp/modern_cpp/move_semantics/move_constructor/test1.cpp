@@ -36,12 +36,6 @@ public:
     // 1. Copy constructor is implicitly deleted.
     // A(const A& other) = delete;
 
-    // BELOW IS OUTPUT WITH COPY CONSTRUCTOR VERSION
-    //    A(const A& a)
-    //    :id(counter++)
-    //    {
-    //        LOG_DBG("id: %d", id);
-    //    }
 
 private:
     int id;
