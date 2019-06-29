@@ -83,8 +83,6 @@ void example4()
 
 } // namespace
 
-
-
 void Test1() {
     LOG_BEG();
     example1();

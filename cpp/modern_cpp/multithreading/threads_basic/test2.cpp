@@ -35,7 +35,7 @@ public:
     scoped_thread& operator=(scoped_thread const&)=delete;
 };
 
-void example2()
+void Test2_1()
 {
     LOG_BEG();
     scoped_thread(std::thread(thread_func));
@@ -46,7 +46,7 @@ void example2()
 void Test2()
 {
     LOG_BEG();
-    example2();
+    Test2_1();
 // OUTPUT
 //    scoped_thread::scoped_thread(std::thread)
 //    scoped_thread::~scoped_thread()>>>

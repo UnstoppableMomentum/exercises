@@ -3,12 +3,13 @@
 
 // C++11
 // Threads
-// - run thread,
-// - lamda thread functions
-// - run pool of threads, pass data to a thread function
-// - pass data to a thread function
-// - pass data to a thread function with std::ref,
-//   modify parameters by the thread function
+// example1: run thread,
+// example2: lamda thread functions
+// example3: run pool of threads, pass data to a thread function
+// example4: pass data to a thread function,
+//           pass data to a thread function with std::ref,
+// example4: modify parameters by the thread function
+
 void Test1();
 
 #endif // TEST1_H
