@@ -11,6 +11,8 @@
 #include <vector>
 #include <thread>
 
+namespace {
+
 bool CheckResults(std::vector<int>& res, int size)
 {
     bool bRes = true;
@@ -31,19 +33,21 @@ bool CheckResults(std::vector<int>& res, int size)
     return bRes;
 }
 
-namespace {
 int GetId() {
     static int glCounter = 0;
     return glCounter++;
 }
-}
 
+} // namespace
+
+// class DataRacesTestFunctor
+// demonstrates data races
 template <typename T>
 class DataRacesTestFunctor
 {
 public:
 
-    DataRacesTestFunctor(T& stack, std::vector<int>& res)
+    DataRacesTestFunctor(StackBadDesign<T>& stack, std::vector<int>& res)
         : stack_(stack)
         , res_(res)
         , id_(GetId())
@@ -69,7 +73,8 @@ public:
                 auto item = stack_.Top(); // <--
                 stack_.Pop(); // <--
 
-                //A possible ordering of operations on a stack from two threads
+                // A possible ordering of operations on a stack from two threads.
+                // Let's suppose the top item in the stack is 99
                 //Thread A                      |Thread B
                 //1.  if(!stack_.empty())       |
                 //2.                            | if(!stack_.empty())
@@ -98,13 +103,95 @@ public:
     }
 
 private:
-    T& stack_;
+    StackBadDesign<T>& stack_;
     std::vector<int>& res_;
     int id_;
 };
 
-template <typename T>
-void StartDataRacesTest(const TestOptions& testOptions, T& stack)
+
+// class StackThreadSafeImpl1Functor
+// test thread safe stack implementation 1
+// T:  stack data type
+// popSharedPointer = true : use std::shared_ptr<T> Pop()
+// popSharedPointer = false: use void Pop(T& value)
+template <typename T, bool popSharedPointer>
+class StackThreadSafeImpl1Functor
+{
+public:
+
+    StackThreadSafeImpl1Functor(StackThreadSafeImpl1<T>& stack, std::vector<int>& res)
+        : stack_(stack)
+        , res_(res)
+        , id_(GetId())
+        , popSharedPointer_(popSharedPointer)
+    {
+        LOG_FUNC();
+        std::cout << "id" << id_ << std::endl;
+    }
+
+    ~StackThreadSafeImpl1Functor()
+    {
+        LOG_FUNC();
+        std::cout << "id" << id_ << std::endl;
+    }
+
+    void operator()()
+    {
+        LOG_BEG();
+        if (popSharedPointer_) {
+            TestSharedPtrPop();
+        } else {
+            TestRefValuePop();
+        }
+        LOG_END();
+    }
+
+private:
+
+    void TestSharedPtrPop() {
+        LOG_BEG();
+        while (!stack_.Empty()) {
+            try {
+                res_.push_back(*stack_.Pop());
+            } catch (const EmptyStackException& ex) {
+                static int counter = 1;
+                std::cout << __PRETTY_FUNCTION__
+                          << " " << ex.what()
+                          << " counter:" << counter
+                          << std::endl;
+                ++counter;
+            }
+        }
+        LOG_END();
+    }
+
+    void TestRefValuePop() {
+        LOG_BEG();
+        while (!stack_.Empty()) {
+            try {
+                T item;
+                stack_.Pop(item);
+                res_.push_back(item);
+            } catch (const EmptyStackException& ex) {
+                static int counter = 1;
+                std::cout << __PRETTY_FUNCTION__
+                          << " " << ex.what()
+                          << " counter:" << counter
+                          << std::endl;
+                ++counter;
+            }
+        }
+        LOG_END();
+    }
+
+    StackThreadSafeImpl1<T>& stack_;
+    std::vector<int>& res_;
+    int id_;
+    bool popSharedPointer_;
+};
+
+template <typename TypeStack, typename TypeTestFunc>
+void StartDataRacesTest(const TestOptions& testOptions, TypeStack& stack)
 {
     LOG_BEG();
     // Vector of threads to read data from the stack
@@ -115,7 +202,7 @@ void StartDataRacesTest(const TestOptions& testOptions, T& stack)
     // Read data from the stack in parallel
     for (int i = 0; i < testOptions.iThreadsCnt; ++i) {
         //TODO provide functors for othre tests
-        DataRacesTestFunctor<T> f(stack, res[i]);
+        TypeTestFunc f(stack, res[i]);
         threads[i]=std::thread(f);
     }
     std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
@@ -134,21 +221,14 @@ void StartDataRacesTest(const TestOptions& testOptions, T& stack)
     LOG_END();
 }
 
-// Fill stack with test data
-template <typename T>
-void FillData(T& stack, int size)
+template <typename TypeStack, typename TypeTestFunc>
+void TestDataRaces(const TestOptions& testOptions, TypeStack& stack)
 {
-    for (int i = 0; i < size; ++i) {
+    // Fill stack with test data
+    for (int i = 0; i < testOptions.iDataSize; ++i) {
         stack.Push(i);
     }
-}
-
-template <typename T>
-void TestDataRaces(const TestOptions& testOptions, T& stack)
-{
-    FillData(stack, testOptions.iDataSize);
-    // TODO provide functors for other tests
-    StartDataRacesTest(testOptions, stack);
+    StartDataRacesTest<TypeStack, TypeTestFunc>(testOptions, stack);
 }
 
 void Test1(const TestOptions& testOptions)
@@ -158,29 +238,40 @@ void Test1(const TestOptions& testOptions)
     case ETestTypeDataRaces: {
         LOG_FUNC_LINE();
         StackBadDesign<int> stack;
-        TestDataRaces(testOptions, stack);
+        TestDataRaces<StackBadDesign<int>, DataRacesTestFunctor<int> >
+                (testOptions, stack);
         LOG_FUNC_LINE();
     }
-        break;
-    case ETestTypeNoDataRaces_1:{
+    break;
+
+    case ETestTypeNoDataRaces_1_RefVal:{
         LOG_FUNC_LINE();
-        // TODO
-        StackBadDesign<int> stack;
-        TestDataRaces(testOptions, stack);
+        StackThreadSafeImpl1<int> stack;
+        TestDataRaces<StackThreadSafeImpl1<int>,
+                StackThreadSafeImpl1Functor<int, false> >
+                (testOptions, stack);
         LOG_FUNC_LINE();
     }
-        break;
+    break;
+
+    case ETestTypeNoDataRaces_1_SharedPtr: {
+        LOG_FUNC_LINE();
+        StackThreadSafeImpl1<int> stack;
+        TestDataRaces<StackThreadSafeImpl1<int>,
+                StackThreadSafeImpl1Functor<int, true> >
+                (testOptions, stack);
+        LOG_FUNC_LINE();
+    }
+    break;
+
     case ETestTypeNoDataRaces_2:
     {
         LOG_FUNC_LINE();
         // TODO
-        StackBadDesign<int> stack;
-        TestDataRaces(testOptions, stack);
         LOG_FUNC_LINE();
     }
-        break;
+    break;
+
     };
     LOG_END();
 }
-
-

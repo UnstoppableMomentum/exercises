@@ -1,15 +1,30 @@
 #ifndef STACK_IMPL1_H
 #define STACK_IMPL1_H
 
+#include <memory>
 #include <mutex>
 #include <stack>
 
+#include "logs.h"
 #include "stack_common.h"
-// TODO
+
+// class StackThreadSafeImpl1
+// Thread safe stack implementation N1
 template <typename T>
-class StackImpl1
+class StackThreadSafeImpl1
 {
 public:
+    StackThreadSafeImpl1()
+    {
+        LOG_FUNC()
+    }
+
+    ~StackThreadSafeImpl1()
+    {
+        LOG_FUNC()
+    }
+
+    StackThreadSafeImpl1& operator=(const StackThreadSafeImpl1&) = delete;
 
     bool Empty() const
     {
@@ -22,20 +37,24 @@ public:
         data_.push(val);
     }
 
-    T Top() {
+    void Pop(T& value) {
         std::lock_guard<std::mutex> lock(m_);
         if (data_.empty()) {
             throw EmptyStackException();
         }
-        return data_.top();
+        value=data_.top();
+        data_.pop();
     }
 
-    void Pop() {
+    std::shared_ptr<T> Pop()
+    {
         std::lock_guard<std::mutex> lock(m_);
-        if (data_.empty()) {
+        if(data_.empty()) {
             throw EmptyStackException();
         }
+        std::shared_ptr<T> const res(std::make_shared<T>(data_.top()));
         data_.pop();
+        return res;
     }
 
 private:

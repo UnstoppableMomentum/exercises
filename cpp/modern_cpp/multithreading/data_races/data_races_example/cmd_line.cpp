@@ -6,8 +6,9 @@
 // Command line options:
 // t - test type, one of the following:
 //     0: data races test
-//     1: no data races test, implementation 1
-//     2: no data races test, implementation 2
+//     1: no data races test, implementation 1, use Pop() return shared_ptr
+//     2: no data races test, implementation 1, use Pop(T&value)
+//     3: no data races test, implementation 2
 // n - number of test items, must be > 0
 // s - number of threads, must be > 0
 //
@@ -55,8 +56,9 @@ void PrintHelp()
     std::cout << "Command line options:" << std::endl
               << "t - " << kOptionTestType << ", on of the following:" << std::endl
               << "    0: data races test" << std::endl
-              << "    1: no data races test (implementation 1)" << std::endl
-              << "    2: no data races test (implementation 2)"
+              << "    1: no data races test implementation 1, use Pop() return shared_ptr" << std::endl
+              << "    2: no data races test implementation 1, use Pop(T&value)"
+              << "    3: no data races test implementation 2"
               << ", default value:" << opt.eTestType << std::endl
               << "n - " << kOptionNumOfTestItems << ", must be >0 and <3"
               << ", default value:" << opt.iDataSize << std::endl
