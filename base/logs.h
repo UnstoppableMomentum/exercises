@@ -9,7 +9,7 @@
 #define LOG_END()       std::cout << __PRETTY_FUNCTION__ << "<<<" << std::endl;
 #define LOG_BR()        std::cout << "----------------"  << std::endl;
 
-#define LOG_DBG(Format, ...)    printf ("%s"       Format "\n", __PRETTY_FUNCTION__, __VA_ARGS__)
+#define LOG_DBG(Format, ...)    printf ("%s" Format "\n", __PRETTY_FUNCTION__, __VA_ARGS__)
 #define LOG_DBG_0(Format, ...)  printf (Format "\n", __VA_ARGS__)
 #define LOG_DBG_LN(Format, ...) printf ("[%s:%u] " Format "\n", __PRETTY_FUNCTION__, __LINE__, __VA_ARGS__)
 
