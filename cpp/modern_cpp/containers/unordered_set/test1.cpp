@@ -10,6 +10,8 @@
 #include "./test1.h"
 #include "../../../../base/logs.h"
 
+namespace {
+
 using TContainer = std::unordered_set<std::string>;
 
 void Add(TContainer &container, const std::string &item) {
@@ -34,12 +36,14 @@ void Find(TContainer &container, const std::string &item) {
   }
 }
 
+}  // namespace
+
 void Test1() {
   TContainer container;
-  Add(container, "aaa");
-  Add(container, "bbb");
-  Add(container, "ccc");
+  Add(container, "Test1aaa");
+  Add(container, "Test1bbb");
+  Add(container, "Test1ccc");
   Dump(container);
-  Find(container, "bbb");
+  Find(container, "Test1bbb");
   Find(container, "qwerty");
 }

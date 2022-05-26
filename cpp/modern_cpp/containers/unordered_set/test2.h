@@ -1,6 +1,12 @@
-#ifndef TEST1_H_
-#define TEST1_H_
+//////////////////////////////////
+//                              //
+// Copyright (c) 2022 Exercises //
+//                              //
+//////////////////////////////////
 
-void Test1();
+#ifndef TEST2_H_
+#define TEST2_H_
 
-#endif  // TEST1_H_
+void Test2();
+
+#endif  // TEST2_H_

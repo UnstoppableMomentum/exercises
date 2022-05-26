@@ -8,4 +8,4 @@ project(qqq)
 include_directories(../../../../base)
 
 # add the executable
-add_executable(qqq main.cpp test1.cpp)
+add_executable(qqq main.cpp test1.cpp test2.cpp test3.cpp)

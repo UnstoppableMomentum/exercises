@@ -1,8 +1,18 @@
-#include <iostream>
-#include "test1.h"
+//////////////////////////////////
+//                              //
+// Copyright (c) 2022 Exercises //
+//                              //
+//////////////////////////////////
 
-int main(int argc, char *argv[])
-{
+#include <iostream>
+
+#include "./test1.h"
+#include "./test2.h"
+#include "./test3.h"
+
+int main(int argc, char *argv[]) {
     Test1();
+    Test2();
+    Test3();
     return 0;
 }

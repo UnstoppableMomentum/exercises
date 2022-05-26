@@ -4,9 +4,9 @@
 //                              //
 //////////////////////////////////
 
-#ifndef TEST1_H_
-#define TEST1_H_
+#ifndef TEST3_H_
+#define TEST3_H_
 
-void Test1();
+void Test3();
 
-#endif  // TEST1_H_
+#endif  // TEST3_H_
