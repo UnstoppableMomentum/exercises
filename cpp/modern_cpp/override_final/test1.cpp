@@ -22,7 +22,7 @@ public:
     }
 
     ClassWithRefQual& operator = (const ClassWithRefQual & c) {
-        LOG_FUNC();
+:        LOG_FUNC();
     }
 
     // 1. reference qualifier, applies only when *this is an lvalue
