@@ -8,8 +8,7 @@
 
 namespace {
 
-int Task1()
-{
+int Task1() {
     LOG_BEG();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(2s);
@@ -17,8 +16,7 @@ int Task1()
     return 1;
 }
 
-int Task2(int i)
-{
+int Task2(int i) {
     LOG_BEG();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(3s);
@@ -26,8 +24,7 @@ int Task2(int i)
     return i * 2;
 }
 
-void Example0()
-{
+void Example0() {
     LOG_BEG();
     std::packaged_task<int()> pkg_task1(Task1);
     std::future<int> future1 = pkg_task1.get_future();
@@ -36,8 +33,7 @@ void Example0()
     LOG_END();
 }
 
-void Example1()
-{
+void Example1() {
     LOG_BEG();
     std::packaged_task<int()> pkg_task1(std::bind(Task2, 5));
     std::future<int> future1 = pkg_task1.get_future();
@@ -62,7 +58,7 @@ void Example2()
     LOG_END();
 }
 
-} // namespace
+}  // namespace
 
 void Test1() {
     LOG_BEG();
@@ -71,4 +67,3 @@ void Test1() {
     Example2();
     LOG_END();
 }
-

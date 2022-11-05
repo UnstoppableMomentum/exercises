@@ -7,25 +7,21 @@
 
 namespace {
 
-void ThreadFunc()
-{
+void ThreadFunc() {
     LOG_FUNC();
 }
 
-void ThreadFuncWithArg(int arg)
-{
+void ThreadFuncWithArg(int arg) {
     LOG_DBG("arg:%d", arg);
 }
 
-void ThreadFuncModifyArg(int& arg)
-{
+void ThreadFuncModifyArg(int& arg) {
     LOG_DBG("arg:%d", arg);
     ++arg;
 }
 
 // run a thread
-void example1()
-{
+void example1() {
     LOG_BEG();
     std::thread t(ThreadFunc);
     t.join();
@@ -33,8 +29,7 @@ void example1()
 }
 
 // lamda thread functions
-void example2()
-{
+void example2() {
     LOG_BEG();
     std::thread t([](){
         LOG_FUNC();
@@ -47,15 +42,14 @@ void example2()
 
 // Run and wait for multiple threads
 // Pass data to a thread function
-void example3()
-{
+void example3() {
     LOG_BEG();
     enum { THREADS_NUM = 3 };
 
     std::vector<std::thread> threads(THREADS_NUM);
 
     for (int i = 0; i < THREADS_NUM; ++i) {
-        threads[i]=std::thread(ThreadFuncWithArg, i);
+        threads[i] = std::thread(ThreadFuncWithArg, i);
     }
 
     std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));

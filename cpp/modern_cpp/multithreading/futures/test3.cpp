@@ -11,17 +11,11 @@
 namespace {
 
 class A {
-public:
-
+ public:
     A() : m_d(0.0) {}
+    explicit A(double d) : m_d(d) {}
 
-    A(double d) : m_d(d)
-    {
-
-    }
-
-    double operator() (double d)
-    {
+    double operator() (double d) {
         LOG_BEG();
         std::cout << "000 m_d:" << m_d << std::endl;
         m_d = d;
@@ -31,12 +25,10 @@ public:
         LOG_END();
         return 1;
     }
-
     double m_d;
 };
 
-void Example3()
-{
+void Example3() {
     LOG_BEG();
     // Calls temp A(2.2222) where tmpy is move-constructed from A()
     auto futureTask1 = std::async(A(), 2.2222);
@@ -57,8 +49,7 @@ void Example3()
 }
 
 
-void Example4()
-{
+void Example4() {
     LOG_BEG();
     auto futureTask1 = std::async(std::launch::async   , A(), 4.44);
     // When async is used instead of deferred for futureTask2
@@ -72,7 +63,7 @@ void Example4()
     LOG_END();
 }
 
-} // namespace
+}  // namespace
 
 void Test3() {
     LOG_BEG();

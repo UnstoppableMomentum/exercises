@@ -9,12 +9,10 @@
 namespace {
 
 class A {
-public:
-
+ public:
     A() : m_s("intial val") {}
 
-    int Task1(int i, const std::string& s)
-    {
+    int Task1(int i, const std::string& s) {
         LOG_BEG();
         m_s = s;
         std::cout << "i:" << i << " " << s << std::endl;
@@ -24,8 +22,7 @@ public:
         return 1;
     }
 
-    int Task2(const std::string& s)
-    {
+    int Task2(const std::string& s) {
         LOG_BEG();
         m_s = s;
         std::cout << s << std::endl;
@@ -37,8 +34,7 @@ public:
     std::string m_s;
 };
 
-void Example2()
-{
+void Example2() {
     LOG_BEG();
     A a;
     A a1;
@@ -54,7 +50,7 @@ void Example2()
     LOG_END();
 }
 
-} // namespace
+}  // namespace
 
 void Test2() {
     LOG_BEG();

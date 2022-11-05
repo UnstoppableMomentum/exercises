@@ -12,15 +12,13 @@ class A;
 void MySwap(int threadId, A& lhs, A& rhs);
 
 class A {
-public:
-    A(int data)
-        : data_(data)
-    {
+ public:
+    explicit A(int data)
+        : data_(data) {
     }
 
-    friend void MySwap(int threadId, A& lhs, A& rhs)
-    {
-        if(&lhs==&rhs)
+    friend void MySwap(int threadId, A& lhs, A& rhs) {
+        if (&lhs == &rhs)
             return;
 
         // 1. std::lock — a function that can lock two or more mutexes at once without risk of deadlock.

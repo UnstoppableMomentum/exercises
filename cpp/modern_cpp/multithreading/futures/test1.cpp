@@ -7,8 +7,7 @@
 
 namespace {
 
-int Task1()
-{
+int Task1() {
     LOG_BEG();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(2s);
@@ -16,8 +15,7 @@ int Task1()
     return 1;
 }
 
-int Task2()
-{
+int Task2() {
     LOG_BEG();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(3s);
@@ -25,8 +23,7 @@ int Task2()
     return 2;
 }
 
-void Example1()
-{
+void Example1() {
     LOG_BEG();
     std::future<int> futureTask1 = std::async(Task1);
     Task2();
@@ -34,7 +31,7 @@ void Example1()
     LOG_END();
 }
 
-} // namespace
+}  // namespace
 
 void Test1() {
     LOG_BEG();
