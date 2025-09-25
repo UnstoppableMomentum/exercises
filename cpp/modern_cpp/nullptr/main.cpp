@@ -87,6 +87,7 @@ void Test2 ()
             std::cout << "null pointer"  << std::endl;
         } else {
             // Do something
+            std::cout << " a is a pointer to object"  << std::endl;
         }
     }
 }
@@ -124,55 +125,55 @@ using MuxGuard = std::lock_guard<std::mutex>;
 void Test3()
 {
     std::cout << "===" << __PRETTY_FUNCTION__ << "==="  << std::endl;
-    // 4. 0, NULL, nullptr are possible.
+    // 4. Arguments of types int(0), ? NULL, nullptr are possible.
     // copy - paste, not a good style
     //=======================
     {
         MuxGuard g(f1m);
         auto a = f1(0);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f1(0) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f2(0);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f2(0) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f3(0);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f3(0) a:" << a << std::endl;
     }
     //=======================
     {
         MuxGuard g(f1m);
         auto a = f1(NULL);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f1(NULL) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f2(NULL);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f2(NULL) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f3(NULL);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f3(NULL) a:" << a << std::endl;
     }
     //=======================
     {
         MuxGuard g(f1m);
         auto a = f1(nullptr);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f1(nullptr) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f2(nullptr);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f2(nullptr) a:" << a << std::endl;
     }
     {
         MuxGuard g(f1m);
         auto a = f3(nullptr);
-        std::cout << " a:" << a << std::endl;
+        std::cout << "f3(nullptr) a:" << a << std::endl;
     }
 }
 
