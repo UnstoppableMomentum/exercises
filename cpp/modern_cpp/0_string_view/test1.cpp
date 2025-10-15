@@ -47,6 +47,10 @@ void TestStringStream(std::string_view str) {
 }
 
 void Test1() {
+    uint16_t m_iPort;
+    long cpp_version = __cplusplus;
+
+    std::cout << "C++ Standard Version: " << cpp_version <<  " " << m_iPort<< std::endl;
     TestStringOwner("TestStringOwner");
     LOG_BR();
     TestStringView("TestStringView");
