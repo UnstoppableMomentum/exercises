@@ -127,6 +127,40 @@ makeInvestment(Ts &&...params)
     return pInv;
 }
 
+<<<<<<< HEAD
+=======
+// C++14 version
+template <typename InvestmentType, typename... Ts>
+// std::unique_ptr<Investment, decltype(delInvmt)>
+auto makeInvestmentCpp14(Ts &&...params)
+{
+    // Process params via perfect forwarding to the derived class constructor
+    InvestmentType *pInvestment = new InvestmentType(std::forward<Ts>(params)...);
+
+    // Return the unique_ptr with the custom deleter
+    return std::unique_ptr<Investment, decltype(delInvmt)>(pInvestment, delInvmt);
+}
+
+// User deleter as a function
+void dellnvrnt2(Investment *pInvestment)
+{
+    std::cout << "-> Invoking FUNCTION custom dellnvrnt2 ..." << std::endl;
+    pInvestment->Log(); // Lambda
+    delete pInvestment;
+    std::cout << "-> Custom FUNCTION deleter finished." << std::endl;
+}
+
+// template <typename InvestmentType, typename... Ts>
+// auto makeInvestmentCpp14FuncDeleter(Ts &&...params)
+// {
+//     // Process params via perfect forwarding to the derived class constructor
+//     InvestmentType *pInvestment = new InvestmentType(std::forward<Ts>(params)...);
+
+//     // Return the unique_ptr with the custom deleter
+//     return std::unique_ptr<Investment, void (*)(Investment *)>(pInvestment, dellnvrnt2);
+// }
+
+>>>>>>> 32117e6 (unique_ptr)
 void Test2()
 {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -147,4 +181,50 @@ void Test2()
 
     auto vaz = std::unique_ptr<Stock, decltype(delInvmt)>(new Stock("VAZ", 500000), delInvmt);
     vaz->Log();
+<<<<<<< HEAD
+=======
+
+    std::unique_ptr<Stock, decltype(delInvmt)> vaz1 =
+        std::unique_ptr<Stock, decltype(delInvmt)>(new Stock("VAZ", 555555), delInvmt);
+    vaz1->Log();
+
+    // C++14
+    {
+        std::cout << "Creating a Stock investment:" << std::endl;
+        auto myStock = makeInvestmentCpp14<Stock>("Tesla", 22222);
+
+        std::cout << "\nCreating a Bond investment:" << std::endl;
+        auto myBond = makeInvestmentCpp14<Bond>(33333);
+    }
+
+    // unique_ptr 2 shared_ytr
+
+    std::shared_ptr<Investment> sp =
+        // Convert to shared ptr
+        makeInvestmentCpp14<Bond>(123456);
+    std::shared_ptr<Investment> sp2 = sp;
+    std::shared_ptr<Investment> sp3 = sp2;
+    sp->Log();
+    sp2->Log();
+    sp3->Log();
+
+
+    auto upFunc = std::unique_ptr<Stock, void (*)(Investment *)>(new Stock("UAZ", 8888888), dellnvrnt2);
+    upFunc->Log();
+
+
+    // Comparison of result type size
+    std::cout << "Comparison of result type size\nshared_ptr: sizeof(sp):" << sizeof(sp3) << " unique_ptr + LAMBDA deleter : sizeof(myBond):"
+              << sizeof(myBond)
+              << " unique_ptr + FUNCTION deleter: sizeof(upFunc):"
+              << sizeof(upFunc)              
+              << std::endl;
+
+
+    // OUTPUT:
+    // Comparison of result type size
+    // shared_ptr: sizeof(sp):16
+    // unique_ptr + LAMBDA deleter : sizeof(myBond):8
+    // unique_ptr + FUNCTION deleter: sizeof(upFunc):16
+>>>>>>> 32117e6 (unique_ptr)
 }
