@@ -127,8 +127,6 @@ makeInvestment(Ts &&...params)
     return pInv;
 }
 
-<<<<<<< HEAD
-=======
 // C++14 version
 template <typename InvestmentType, typename... Ts>
 // std::unique_ptr<Investment, decltype(delInvmt)>
@@ -160,7 +158,7 @@ void dellnvrnt2(Investment *pInvestment)
 //     return std::unique_ptr<Investment, void (*)(Investment *)>(pInvestment, dellnvrnt2);
 // }
 
->>>>>>> 32117e6 (unique_ptr)
+
 void Test2()
 {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -181,8 +179,6 @@ void Test2()
 
     auto vaz = std::unique_ptr<Stock, decltype(delInvmt)>(new Stock("VAZ", 500000), delInvmt);
     vaz->Log();
-<<<<<<< HEAD
-=======
 
     std::unique_ptr<Stock, decltype(delInvmt)> vaz1 =
         std::unique_ptr<Stock, decltype(delInvmt)>(new Stock("VAZ", 555555), delInvmt);
@@ -226,5 +222,5 @@ void Test2()
     // shared_ptr: sizeof(sp):16
     // unique_ptr + LAMBDA deleter : sizeof(myBond):8
     // unique_ptr + FUNCTION deleter: sizeof(upFunc):16
->>>>>>> 32117e6 (unique_ptr)
+
 }
